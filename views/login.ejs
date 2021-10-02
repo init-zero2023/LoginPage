@@ -1,0 +1,36 @@
+<%- include('partials/header.ejs') %> 
+    <div class="container">
+        <div id="warning"></div>
+        <!-- style="max-width: 18rem;" -->
+        <div class="card border-dark mb-3 mt-5" >
+            <div class="card-header text-center">Login to your account</div>
+            <div class="card-body">
+              <form  action="/login" method="POST">
+                <div class="form-group">
+                  <label for="InputEmail">Email address</label>
+                  <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" name='email' placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="InputPassword">Password</label>
+                  <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                <button type="button" class="btn btn-primary mx-3" onclick="document.location.href='/signup'">Register</button>
+            </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+      const warning_div = document.querySelector('#warning')
+      let message = '<%-message%>'
+      if(message.length !== 0){
+        warning_div.innerHTML+=`<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                ${message}.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`
+      }
+      console.log(message)
+    </script>
+<%- include('partials/footer.ejs') %> 
