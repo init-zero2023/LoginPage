@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }))
 
 
-mongoose.connect("mongodb://localhost:27017/temp", {
+mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -27,8 +27,7 @@ mongoose.connect("mongodb://localhost:27017/temp", {
 // token generator
 
 const generateAuthToken = async (user)=>{
-    console.log(user)
-    const token = jwt.sign({_id: user._id}, process.env.SECRET_CODE, {expiresIn: '10h'})
+    const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET_CODE, {expiresIn: '10h'})
     user.tokens = user.tokens.concat({token})
     await user.save()
     return token
@@ -56,7 +55,6 @@ app.post('/login', async(req, res)=>{
             return res.render('login', {message: 'Incorrect password'})
         }
         const token = await generateAuthToken(user)
-        console.log(token)
         res.render('home')
     }catch(error){
         console.log(error.message)
@@ -97,12 +95,3 @@ server.listen(port, ()=>{
     console.log(`Server is running at port ${port}`)
 })
 
-
-const myFunction = async()=>{
-    const token = jwt.sign({_id:'abc1232'}, process.env.SECRET_CODE,{expiresIn:'2 days'})
-    console.log(token)
-    const data = jwt.verify(token, process.env.SECRET_CODE)
-    console.log(data)
-}
-
-myFunction()
