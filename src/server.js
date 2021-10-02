@@ -86,7 +86,6 @@ app.post('/signup', async(req, res)=>{
 
 })
 
-
 app.get('/:dest', (req, res)=>{
     res.render('login', {message: ''})
 })
