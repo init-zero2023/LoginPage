@@ -35,7 +35,7 @@ const generateAuthToken = async (user)=>{
 // login
 
 app.get('/', auth, (req, res)=>{
-    res.render('main')
+    res.send({message: "User logged in successfully"})
 })
 
 app.get('/login', (req, res)=>{
@@ -55,7 +55,7 @@ app.post('/login', async(req, res)=>{
             return res.render('login', {message: 'Incorrect password'})
         }
         const token = await generateAuthToken(user)
-        res.render('home')
+        res.render('home', {token:  token})
     }catch(error){
         console.log(error.message)
         res.render('login', {message: error.message})
@@ -79,7 +79,8 @@ app.post('/signup', async(req, res)=>{
     try{
         await newUser.save()
         const token = await generateAuthToken(newUser)
-        res.render('home')
+        console.log(token)
+        res.render('home', {token: token})
     }catch(error){
         res.render('signup', {message: error.message})
     }
