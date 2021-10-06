@@ -8,8 +8,10 @@
         </div>
     </div>
     <script type="text/javascript">
+    if(token !== 'user validated'){
        localStorage.setItem("token","<%-token%>");
        const token = localStorage.getItem("token")
        console.log(token)
+    }
     </script>
 <%- include('partials/footer.ejs') %> 

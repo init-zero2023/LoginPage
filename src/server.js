@@ -34,8 +34,13 @@ const generateAuthToken = async (user)=>{
 }
 // login
 
-app.get('/', auth, (req, res)=>{
-    res.send({message: "User logged in successfully"})
+app.get('/', (req, res)=>{
+    res.render('helper.ejs')
+})
+
+app.post('/home', auth, (req, res)=>{
+    console.log('user validated')
+    res.render('home', {token: "user validated"})
 })
 
 app.get('/login', (req, res)=>{
