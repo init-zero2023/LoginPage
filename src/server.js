@@ -6,9 +6,11 @@ const mongoose = require('mongoose')
 const User = require('./models/User')
 const jwt = require('jsonwebtoken')
 const auth = require('../src/middleware/auth')
+const cookieParser = require('cookie-parser')
 
 
 const app = express()
+app.use(cookieParser())
 const server = require('http').Server(app)
 const port = process.env.PORT
 const path = require('path')
@@ -34,12 +36,8 @@ const generateAuthToken = async (user)=>{
 }
 // login
 
-app.get('/', (req, res)=>{
-    res.render('helper.ejs')
-})
-
-app.post('/home', auth, (req, res)=>{
-    console.log('user validated')
+app.get('/', auth, (req, res)=>{
+    // console.log('user validated')
     res.render('home', {token: "user validated"})
 })
 
@@ -60,7 +58,8 @@ app.post('/login', async(req, res)=>{
             return res.render('login', {message: 'Incorrect password'})
         }
         const token = await generateAuthToken(user)
-        res.render('home', {token:  token})
+        res.cookie('token', token)
+        res.render('home')
     }catch(error){
         console.log(error.message)
         res.render('login', {message: error.message})
@@ -85,16 +84,25 @@ app.post('/signup', async(req, res)=>{
         await newUser.save()
         const token = await generateAuthToken(newUser)
         console.log(token)
-        res.render('home', {token: token})
+        res.cookie('token', token)
+        res.render('home')
     }catch(error){
         res.render('signup', {message: error.message})
     }
 
 })
 
+app.get('/logout', (req, res)=>{
+    // res.send('logout successfully')
+    res.clearCookie('token')
+    res.render('login', {message:'Logged out successfully'})
+})
+
 app.get('/:dest', (req, res)=>{
     res.render('login', {message: ''})
 })
+
+
 
 server.listen(port, ()=>{
     console.log(`Server is running at port ${port}`)

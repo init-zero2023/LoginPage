@@ -6,12 +6,6 @@
                 <img class="card-img-top" src="https://myviewboard.com/blog/wp-content/uploads/2020/08/MP0027-01-scaled.jpg" alt="Card image cap">
             </div>
         </div>
+        <button type="button" class="btn btn-primary" onclick="document.location.href='/logout'">Logout</button>
     </div>
-    <script type="text/javascript">
-    if(token !== 'user validated'){
-       localStorage.setItem("token","<%-token%>");
-       const token = localStorage.getItem("token")
-       console.log(token)
-    }
-    </script>
 <%- include('partials/footer.ejs') %> 
